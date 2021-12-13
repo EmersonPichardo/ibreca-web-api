@@ -53,7 +53,7 @@ namespace ibreca_web_api
                 options =>
                     options
                         .SetIsOriginAllowedToAllowWildcardSubdomains()
-                        .WithOrigins("http://localhost:3000", "https://*.ibreca-web-app.pages.dev")
+                        .WithOrigins("http://localhost:3000", "https://*.ibreca-web-app.pages.dev", "https://admin.ibreca.org/")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials()
