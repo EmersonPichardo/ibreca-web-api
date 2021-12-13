@@ -50,7 +50,13 @@ namespace ibreca_web_api
             }
 
             app.UseCors(
-                options => options.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader()
+                options =>
+                    options
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .WithOrigins("http://localhost:3000", "https://*.ibreca-web-app.pages.dev")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
             );
 
             app.UseHttpsRedirection();
