@@ -22,8 +22,7 @@ namespace ibreca_web_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            bool isRemote = Configuration.GetValue<bool>("IsRemote");
-            string MainConnectionString = Configuration.GetConnectionString($"MainConnection{(isRemote ? "Remote" : "")}");
+            string MainConnectionString = Configuration.GetConnectionString("MainConnection");
             services.AddDbContextPool<IbrecaDBContext>(options => options.UseMySql(MainConnectionString, ServerVersion.AutoDetect(MainConnectionString)));
 
             services.Configure<ForwardedHeadersOptions>(options =>

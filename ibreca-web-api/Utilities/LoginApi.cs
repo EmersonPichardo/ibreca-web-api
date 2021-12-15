@@ -27,9 +27,8 @@ namespace ibreca_web_api
                     .AddJsonFile("appsettings.json", false, true)
                     .Build();
 
-            bool isDeveploment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
-            httpClient.BaseAddress = new Uri(appSetting.GetValue<string>($"SecurityApi:BaseUrl{(isDeveploment ? "-dev" : "")}"));
-            applicationToken = appSetting.GetValue<string>($"SecurityApi:ApiToken{(isDeveploment ? "-dev" : "")}");
+            httpClient.BaseAddress = new Uri(appSetting.GetValue<string>("SecurityApi:BaseUrl"));
+            applicationToken = appSetting.GetValue<string>("SecurityApi:ApiToken");
         }
 
         public async Task<ActionResult<LoginResult>> Login(string email, string password)
