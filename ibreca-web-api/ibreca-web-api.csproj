@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>ibreca_web_api</RootNamespace>
+    <UserSecretsId>20ddb161-00b2-42b8-b4d5-95f9ac405451</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

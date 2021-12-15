@@ -1,5 +1,4 @@
 using ibreca_data_access.Contexts.IbrecaDB;
-using ibreca_web_api.SettingsModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -13,7 +12,7 @@ namespace ibreca_web_api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
         }
@@ -23,10 +22,9 @@ namespace ibreca_web_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string MainConnectionString = Configuration.GetConnectionString("MainConnection");
+            bool isRemote = Configuration.GetValue<bool>("IsRemote");
+            string MainConnectionString = Configuration.GetConnectionString($"MainConnection{(isRemote ? "Remote" : "")}");
             services.AddDbContextPool<IbrecaDBContext>(options => options.UseMySql(MainConnectionString, ServerVersion.AutoDetect(MainConnectionString)));
-
-            services.Configure<SecurityApiConfiguration>(Configuration.GetSection("SecurityApi"));
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
