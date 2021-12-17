@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ibreca_data_access.Contexts.IbrecaDB.Models
 {
-    public class Post
+    public class BlogEntry
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -12,12 +12,12 @@ namespace ibreca_data_access.Contexts.IbrecaDB.Models
         public string Body { get; set; }
         public string Status { get; set; }
 
-        public class Configuration : IEntityTypeConfiguration<Post>
+        public class Configuration : IEntityTypeConfiguration<BlogEntry>
         {
-            public void Configure(EntityTypeBuilder<Post> builder)
+            public void Configure(EntityTypeBuilder<BlogEntry> builder)
             {
-                builder.ToTable("posts");
-                builder.HasKey(post => post.Id).HasName("pk_posts");
+                builder.ToTable("blogentries");
+                builder.HasKey(post => post.Id).HasName("pk_blogentries");
 
                 builder.Property(post => post.Id).HasColumnType("int").UseMySqlIdentityColumn().IsRequired();
                 builder.Property(post => post.Title).HasColumnType("varchar(100)").IsRequired();

@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ibreca_data_access.Contexts.IbrecaDB;
 
 namespace ibreca_data_access.Migrations
 {
     [DbContext(typeof(IbrecaDBContext))]
-    partial class IbrecaDBContextModelSnapshot : ModelSnapshot
+    [Migration("20211216203321_change_table_name")]
+    partial class change_table_name
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

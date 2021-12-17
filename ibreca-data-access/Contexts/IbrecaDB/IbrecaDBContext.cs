@@ -5,7 +5,7 @@ namespace ibreca_data_access.Contexts.IbrecaDB
 {
     public class IbrecaDBContext : DbContext
     {
-        public DbSet<Post> Posts { get; set; }
+        public DbSet<BlogEntry> BlogEntries { get; set; }
 
         public IbrecaDBContext(DbContextOptions<IbrecaDBContext> options) : base(options) { }
 
@@ -13,7 +13,7 @@ namespace ibreca_data_access.Contexts.IbrecaDB
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new Post.Configuration());
+            modelBuilder.ApplyConfiguration(new BlogEntry.Configuration());
         }
     }
 }
