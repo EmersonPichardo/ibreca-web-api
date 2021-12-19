@@ -1,12 +1,11 @@
-﻿using System;
+﻿using ibreca_data_access.Contexts.IbrecaDB;
+using ibreca_data_access.Contexts.IbrecaDB.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ibreca_data_access.Contexts.IbrecaDB;
-using ibreca_data_access.Contexts.IbrecaDB.Models;
 
 namespace ibreca_web_api.Controllers.BlogEntries
 {
@@ -21,14 +20,30 @@ namespace ibreca_web_api.Controllers.BlogEntries
             _context = context;
         }
 
-        // GET: api/BlogEntries
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<BlogEntry>>> GetBlogEntries()
+        [HttpGet("page/{page}/{search}/{from}/{to}")]
+        public async Task<ActionResult<Page<BlogEntryDto>>> GetBlogEntriesPage(int page, string search = null, DateTime? from = null, DateTime? to = null)
         {
-            return await _context.BlogEntries.ToListAsync();
+            List<BlogEntry> list =
+                await _context.BlogEntries
+                    .Where(entry =>
+                        (string.IsNullOrWhiteSpace(search) ? true : entry.Title.Contains(search)) &&
+                        (from.HasValue ? (entry.PublicationDate >= from.Value) : true) &&
+                        (to.HasValue ? (entry.PublicationDate <= to.Value) : true)
+                    ).ToListAsync();
+
+            BlogEntry[] listPage = list.Skip((page - 1) * Page.Length).Take(Page.Length).ToArray();
+
+            BlogEntryDto[] listDto = new BlogEntryDto[listPage.Length];
+            for (int index = 0; index < listDto.Length; index++) listDto[index] = new BlogEntryDto(listPage[index]);
+
+            return new Page<BlogEntryDto>()
+            {
+                List = listDto,
+                Number = page,
+                TotalLength = list.Count()
+            };
         }
 
-        // GET: api/BlogEntries/5
         [HttpGet("{id}")]
         public async Task<ActionResult<BlogEntry>> GetBlogEntry(int id)
         {
@@ -42,8 +57,6 @@ namespace ibreca_web_api.Controllers.BlogEntries
             return blogEntry;
         }
 
-        // PUT: api/BlogEntries/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBlogEntry(int id, BlogEntry blogEntry)
         {
@@ -52,10 +65,13 @@ namespace ibreca_web_api.Controllers.BlogEntries
                 return BadRequest();
             }
 
-            _context.Entry(blogEntry).State = EntityState.Modified;
-
             try
             {
+                BlogEntry foundEntry = await _context.BlogEntries.AsNoTracking().SingleOrDefaultAsync(entry => entry.Id == id);
+                blogEntry.PublicationDate = foundEntry.PublicationDate;
+
+                _context.Entry(blogEntry).State = EntityState.Modified;
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -73,18 +89,16 @@ namespace ibreca_web_api.Controllers.BlogEntries
             return NoContent();
         }
 
-        // POST: api/BlogEntries
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<BlogEntry>> PostBlogEntry(BlogEntry blogEntry)
         {
+            blogEntry.PublicationDate = DateTime.Now;
             _context.BlogEntries.Add(blogEntry);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetBlogEntry", new { id = blogEntry.Id }, blogEntry);
         }
 
-        // DELETE: api/BlogEntries/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBlogEntry(int id)
         {

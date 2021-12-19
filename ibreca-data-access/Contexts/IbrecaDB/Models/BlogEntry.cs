@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace ibreca_data_access.Contexts.IbrecaDB.Models
 {
@@ -10,6 +11,7 @@ namespace ibreca_data_access.Contexts.IbrecaDB.Models
         public string CoverUrl { get; set; }
         public string HeaderUrl { get; set; }
         public string Body { get; set; }
+        public DateTime PublicationDate { get; set; }
         public string Status { get; set; }
 
         public class Configuration : IEntityTypeConfiguration<BlogEntry>
@@ -24,6 +26,7 @@ namespace ibreca_data_access.Contexts.IbrecaDB.Models
                 builder.Property(post => post.CoverUrl).HasColumnType("varchar(256)");
                 builder.Property(post => post.HeaderUrl).HasColumnType("varchar(256)");
                 builder.Property(post => post.Body).HasColumnType("text").IsRequired();
+                builder.Property(post => post.PublicationDate).HasColumnType("datetime").IsRequired();
                 builder.Property(post => post.Status).HasColumnType("varchar(20)").IsRequired();
             }
         }
