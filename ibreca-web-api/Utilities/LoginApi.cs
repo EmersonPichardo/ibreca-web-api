@@ -33,16 +33,30 @@ namespace ibreca_web_api
 
         public async Task<ActionResult<LoginResult>> Login(string email, string password)
         {
-            return await Send<LoginResult>(Method.post, "login", new { email, password });
+            return await Send(Method.post, "login", new { email, password });
         }
 
-        private async Task<ActionResult<T>> Send<T>(Method method, string url, object content = null)
+        public async Task<ActionResult<bool>> IsTokenValid(string token)
+        {
+            (string, string)[] tokenHeader = new (string, string)[1] { ("Token", token) };
+            return await Send(Method.get, "login", headers: tokenHeader);
+        }
+
+        private async Task<ActionResult> Send(Method method, string url, object content = null, (string, string)[] headers = null)
         {
             try
             {
                 HttpMethod httpMethod = new HttpMethod(method.ToString());
                 HttpRequestMessage request = new HttpRequestMessage(httpMethod, url);
                 request.Headers.Add("ApplicationToken", applicationToken);
+
+                if (headers != null)
+                {
+                    for (int index = 0; index < headers.Length; index++)
+                    {
+                        request.Headers.Add(headers[index].Item1, headers[index].Item2);
+                    }
+                }
 
                 if (content != null)
                 {
@@ -61,7 +75,12 @@ namespace ibreca_web_api
             }
             catch (Exception exception)
             {
-                return new ObjectResult(exception);
+                return new ContentResult()
+                {
+                    StatusCode = 500,
+                    Content = JsonConvert.SerializeObject(exception),
+                    ContentType = contentType
+                };
             }
         }
 

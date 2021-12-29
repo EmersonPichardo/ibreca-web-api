@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 
 namespace ibreca_web_api.Controllers.BlogEntries
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class BlogEntriesController : ControllerBase
+    public class BlogEntriesController : AuthControllerBase
     {
         private readonly IbrecaDBContext _context;
 
