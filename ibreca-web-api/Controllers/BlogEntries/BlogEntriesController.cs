@@ -18,13 +18,14 @@ namespace ibreca_web_api.Controllers.BlogEntries
             _context = context;
         }
 
-        [HttpGet("page/{page}/{search}/{from}/{to}")]
-        public async Task<ActionResult<Page<BlogEntryDto>>> GetBlogEntriesPage(int page, string search = null, DateTime? from = null, DateTime? to = null)
+        [HttpGet("page/{page}/{status}/{search}/{from}/{to}")]
+        public async Task<ActionResult<Page<BlogEntryDto>>> GetBlogEntriesPage(int page, string search = null, string status = null, DateTime? from = null, DateTime? to = null)
         {
             List<BlogEntry> list =
                 await _context.BlogEntries
                     .Where(entry =>
                         (string.IsNullOrWhiteSpace(search) ? true : entry.Title.Contains(search)) &&
+                        (string.IsNullOrWhiteSpace(status) ? true : entry.Status == status) &&
                         (from.HasValue ? (entry.PublicationDate >= from.Value) : true) &&
                         (to.HasValue ? (entry.PublicationDate <= to.Value) : true)
                     ).ToListAsync();
