@@ -16,6 +16,6 @@
 
     public static class Page
     {
-        public static readonly int Length = 24;
+        public static readonly int Length = 6;
     }
 }

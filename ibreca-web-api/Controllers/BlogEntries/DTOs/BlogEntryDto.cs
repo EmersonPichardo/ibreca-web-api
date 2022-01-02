@@ -7,6 +7,7 @@ namespace ibreca_web_api.Controllers.BlogEntries
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public string Body { get; set; }
         public string CoverUrl { get; set; }
         public DateTime PublicationDate { get; set; }
         public string Status { get; set; }
@@ -15,6 +16,7 @@ namespace ibreca_web_api.Controllers.BlogEntries
         {
             Id = blogEntry.Id;
             Title = blogEntry.Title;
+            Body = blogEntry.Body;
             CoverUrl = blogEntry.CoverUrl;
             PublicationDate = blogEntry.PublicationDate;
             Status = blogEntry.Status;
