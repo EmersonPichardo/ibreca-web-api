@@ -2,6 +2,7 @@
 using ibreca_data_access.Contexts.IbrecaDB.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ibreca_web_api.Controllers.BlogEntries
 {
@@ -23,6 +24,8 @@ namespace ibreca_web_api.Controllers.BlogEntries
 
             foreach (HtmlNode node in htmlDocument.DocumentNode.DescendantsAndSelf())
             {
+                if(texts.Sum(text => text.Length) >= 300) break;
+
                 if (node.NodeType == HtmlNodeType.Text)
                 {
                     if (node.InnerText.Trim() != "")

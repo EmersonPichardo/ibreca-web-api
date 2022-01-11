@@ -27,7 +27,7 @@ namespace ibreca_web_api.Controllers.BlogEntries
                         (from.HasValue ? (entry.PublicationDate >= from.Value) : true) &&
                         (to.HasValue ? (entry.PublicationDate <= to.Value) : true)
                     )
-                    .OrderBy(entry => entry.PublicationDate)
+                    .OrderByDescending(entry => entry.PublicationDate)
                     .ToListAsync();
 
             BlogEntry[] listPage = list.Skip((page - 1) * Page.Length).Take(Page.Length).ToArray();
@@ -45,12 +45,28 @@ namespace ibreca_web_api.Controllers.BlogEntries
             );
         }
 
+
+        [HttpGet("recents")]
+        public async Task<ActionResult<IEnumerable<BlogEntryDto>>> GetBlogEntriesRecents()
+        {
+            BlogEntry[] list =
+                await _context.BlogEntries
+                    .OrderByDescending(entry => entry.PublicationDate)
+                    .Take(3)
+                    .ToArrayAsync();
+
+            BlogEntryDto[] listDto = new BlogEntryDto[list.Length];
+            for (int index = 0; index < listDto.Length; index++) listDto[index] = new BlogEntryDto(list[index]);
+
+            return await Task.FromResult(listDto);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<BlogEntry>> GetBlogEntry(int id)
         {
             BlogEntry blogEntry = await _context.BlogEntries.FindAsync(id);
 
-            if (blogEntry == null) await Task.FromResult(NotFound());
+            if (blogEntry == null) return await Task.FromResult(NotFound());
 
             return await Task.FromResult(blogEntry);
         }

@@ -23,8 +23,8 @@ namespace ibreca_data_access.Contexts.IbrecaDB.Models
 
                 builder.Property(post => post.Id).HasColumnType("int").UseMySqlIdentityColumn().IsRequired();
                 builder.Property(post => post.Title).HasColumnType("varchar(100)").IsRequired();
-                builder.Property(post => post.CoverUrl).HasColumnType("varchar(256)");
-                builder.Property(post => post.HeaderUrl).HasColumnType("varchar(256)");
+                builder.Property(post => post.CoverUrl).HasColumnType("varchar(512)");
+                builder.Property(post => post.HeaderUrl).HasColumnType("varchar(512)");
                 builder.Property(post => post.Body).HasColumnType("text").IsRequired();
                 builder.Property(post => post.PublicationDate).HasColumnType("datetime").IsRequired();
                 builder.Property(post => post.Status).HasColumnType("varchar(20)").IsRequired();

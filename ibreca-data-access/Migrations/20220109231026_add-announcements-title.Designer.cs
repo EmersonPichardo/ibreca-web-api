@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ibreca_data_access.Contexts.IbrecaDB;
 
 namespace ibreca_data_access.Migrations
 {
     [DbContext(typeof(IbrecaDBContext))]
-    partial class IbrecaDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220109231026_add-announcements-title")]
+    partial class addannouncementstitle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace ibreca_data_access.Migrations
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(256)");
 
                     b.HasKey("Id")
                         .HasName("pk_announcements");
@@ -54,10 +56,10 @@ namespace ibreca_data_access.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CoverUrl")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("HeaderUrl")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<DateTime>("PublicationDate")
                         .HasColumnType("datetime");
