@@ -1,4 +1,5 @@
-﻿using ibreca_data_access.Contexts.IbrecaDB;
+﻿using ibreca_data_access.Contexts.CloudinaryAPI;
+using ibreca_data_access.Contexts.IbrecaDB;
 using ibreca_data_access.Contexts.IbrecaDB.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +12,12 @@ namespace ibreca_web_api.Controllers.Announcements
     public class AnnouncementsController : AuthControllerBase
     {
         private readonly IbrecaDBContext _context;
+        private readonly CloudinaryAPI _cloudinaryAPI;
 
-        public AnnouncementsController(IbrecaDBContext context)
+        public AnnouncementsController(IbrecaDBContext context, CloudinaryAPI cloudinaryAPI)
         {
             _context = context;
+            _cloudinaryAPI = cloudinaryAPI;
         }
 
         [HttpGet("page/{page}/{search}")]
@@ -95,8 +98,12 @@ namespace ibreca_web_api.Controllers.Announcements
                 return NotFound();
             }
 
+            string urlAssetId = announcement.UrlAssetId;
+            
             _context.Announcements.Remove(announcement);
             await _context.SaveChangesAsync();
+
+            _cloudinaryAPI.DeleteAsset(urlAssetId);
 
             return NoContent();
         }

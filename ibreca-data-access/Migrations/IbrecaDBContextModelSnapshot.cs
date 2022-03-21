@@ -36,6 +36,10 @@ namespace ibreca_data_access.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(512)");
 
+                    b.Property<string>("UrlAssetId")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
                     b.HasKey("Id")
                         .HasName("pk_announcements");
 
@@ -55,6 +59,9 @@ namespace ibreca_data_access.Migrations
 
                     b.Property<string>("CoverUrl")
                         .HasColumnType("varchar(512)");
+
+                    b.Property<string>("CoverUrlAssetId")
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("HeaderUrl")
                         .HasColumnType("varchar(512)");

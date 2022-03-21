@@ -1,3 +1,4 @@
+using ibreca_data_access.Contexts.CloudinaryAPI;
 using ibreca_data_access.Contexts.IbrecaDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +25,7 @@ namespace ibreca_web_api
         {
             string MainConnectionString = Configuration.GetConnectionString("MainConnection");
             services.AddDbContextPool<IbrecaDBContext>(options => options.UseMySql(MainConnectionString, ServerVersion.AutoDetect(MainConnectionString)));
+            services.AddSingleton(new CloudinaryAPI());
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {

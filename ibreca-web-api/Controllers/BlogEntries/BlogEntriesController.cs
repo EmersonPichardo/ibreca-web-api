@@ -1,4 +1,5 @@
-﻿using ibreca_data_access.Contexts.IbrecaDB;
+﻿using ibreca_data_access.Contexts.CloudinaryAPI;
+using ibreca_data_access.Contexts.IbrecaDB;
 using ibreca_data_access.Contexts.IbrecaDB.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,12 @@ namespace ibreca_web_api.Controllers.BlogEntries
     public class BlogEntriesController : AuthControllerBase
     {
         private readonly IbrecaDBContext _context;
+        private readonly CloudinaryAPI _cloudinaryAPI;
 
-        public BlogEntriesController(IbrecaDBContext context)
+        public BlogEntriesController(IbrecaDBContext context, CloudinaryAPI cloudinaryAPI)
         {
             _context = context;
+            _cloudinaryAPI = cloudinaryAPI;
         }
 
         [HttpGet("page/{page}/{status}/{search}/{from}/{to}")]
@@ -107,8 +110,12 @@ namespace ibreca_web_api.Controllers.BlogEntries
                 return NotFound();
             }
 
+            string coverUrlAssetId = blogEntry.CoverUrlAssetId;
+
             _context.BlogEntries.Remove(blogEntry);
             await _context.SaveChangesAsync();
+
+            _cloudinaryAPI.DeleteAsset(coverUrlAssetId);
 
             return NoContent();
         }
