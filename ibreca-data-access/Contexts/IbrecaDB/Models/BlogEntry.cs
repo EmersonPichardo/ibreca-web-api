@@ -22,7 +22,7 @@ namespace ibreca_data_access.Contexts.IbrecaDB.Models
                 builder.ToTable("blogentries");
                 builder.HasKey(post => post.Id).HasName("pk_blogentries");
 
-                builder.Property(post => post.Id).HasColumnType("int").UseMySqlIdentityColumn().IsRequired();
+                builder.Property(post => post.Id).HasColumnType("int").UseIdentityColumn().IsRequired();
                 builder.Property(post => post.Title).HasColumnType("varchar(100)").IsRequired();
                 builder.Property(post => post.CoverUrlAssetId).HasColumnType("varchar(100)");
                 builder.Property(post => post.CoverUrl).HasColumnType("varchar(512)");

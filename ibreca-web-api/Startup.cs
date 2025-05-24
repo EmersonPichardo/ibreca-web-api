@@ -24,7 +24,7 @@ namespace ibreca_web_api
         public void ConfigureServices(IServiceCollection services)
         {
             string MainConnectionString = Configuration.GetConnectionString("MainConnection");
-            services.AddDbContextPool<IbrecaDBContext>(options => options.UseMySql(MainConnectionString, ServerVersion.AutoDetect(MainConnectionString)));
+            services.AddDbContextPool<IbrecaDBContext>(options => options.UseSqlServer(MainConnectionString));
             services.AddSingleton(new CloudinaryAPI());
 
             services.Configure<ForwardedHeadersOptions>(options =>

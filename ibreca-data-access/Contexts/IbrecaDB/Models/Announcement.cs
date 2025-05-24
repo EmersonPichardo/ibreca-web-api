@@ -19,7 +19,7 @@ namespace ibreca_data_access.Contexts.IbrecaDB.Models
                 builder.ToTable("announcements");
                 builder.HasKey(announcement => announcement.Id).HasName("pk_announcements");
 
-                builder.Property(announcement => announcement.Id).HasColumnType("int").UseMySqlIdentityColumn().IsRequired();
+                builder.Property(announcement => announcement.Id).HasColumnType("int").UseIdentityColumn().IsRequired();
                 builder.Property(announcement => announcement.Title).HasColumnType("varchar(100)").IsRequired();
                 builder.Property(announcement => announcement.UrlAssetId).HasColumnType("varchar(100)").IsRequired();
                 builder.Property(announcement => announcement.Url).HasColumnType("varchar(512)").IsRequired();
