@@ -25,7 +25,8 @@ namespace ibreca_web_api.Controllers.BlogEntries
                     .Where(entry =>
                         (string.IsNullOrWhiteSpace(search) ? true : entry.Title.Contains(search)) &&
                         (from.HasValue ? (entry.PublicationDate >= from.Value) : true) &&
-                        (to.HasValue ? (entry.PublicationDate <= to.Value) : true)
+                        (to.HasValue ? (entry.PublicationDate <= to.Value) : true) &&
+                        entry.Status == BlogEntryStatus.Public
                     )
                     .OrderByDescending(entry => entry.PublicationDate)
                     .ToListAsync();
@@ -51,6 +52,7 @@ namespace ibreca_web_api.Controllers.BlogEntries
         {
             BlogEntry[] list =
                 await _context.BlogEntries
+                    .Where(entry => entry.Status == BlogEntryStatus.Public)
                     .OrderByDescending(entry => entry.PublicationDate)
                     .Take(3)
                     .ToArrayAsync();
@@ -66,7 +68,7 @@ namespace ibreca_web_api.Controllers.BlogEntries
         {
             BlogEntry blogEntry = await _context.BlogEntries.FindAsync(id);
 
-            if (blogEntry == null) return await Task.FromResult(NotFound());
+            if (blogEntry is null || blogEntry.Status is not BlogEntryStatus.Public) return await Task.FromResult(NotFound());
 
             return await Task.FromResult(blogEntry);
         }

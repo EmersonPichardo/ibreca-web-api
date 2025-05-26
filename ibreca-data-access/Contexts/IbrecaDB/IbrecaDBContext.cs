@@ -13,6 +13,7 @@ namespace ibreca_data_access.Contexts.IbrecaDB
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.HasDefaultSchema("post");
 
             modelBuilder.ApplyConfiguration(new BlogEntry.Configuration());
             modelBuilder.ApplyConfiguration(new Announcement.Configuration());
