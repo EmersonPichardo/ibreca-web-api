@@ -28,7 +28,7 @@ namespace ibreca_web_api.Controllers.Announcements
                     .Where(
                         announcement =>
                             !announcement.ShowUntil.HasValue ||
-                            announcement.ShowUntil.Value >= DateTime.Now
+                            announcement.ShowUntil.Value.Date >= DateTime.Now.Date
                     )
                     .ToListAsync()
             );
